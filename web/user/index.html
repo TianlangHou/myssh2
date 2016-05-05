@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>用户页面</title>
+        <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+    </head>
+
+    <body>
+        <form action="user.do">
+            用户名 ：<input type="text" name="name"/>
+            密码：<input type="password" name="password"/>
+            <input type="hidden" name="method" value="register"/>
+            <button type="submit">提交</button>
+        </form>
+        <textarea id="message"></textarea>
+        <button type="button" id="send">发送</button>
+        <script>
+            $("#send").click(function () {
+                var message = {"content": $("#message").val()};
+                $.ajax({
+                    type: "POST",  //提交方式
+                    url: "message.do?method=send",
+                    data: JSON.stringify(message),
+                    dataType: "text",
+                    contentType:"application/json",
+                    success: function(result) {
+                        var status = $.parseJSON(result).status;
+                        $("#message").val(status);
+                    },
+                    error: function () {
+                        $("#message").val("error");
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
